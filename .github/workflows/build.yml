@@ -1,0 +1,29 @@
+name: Build RoD Plugin
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build plugin
+        run: ./gradlew build
+
+      - name: Upload built JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: RoD-jar
+          path: build/libs/*.jar
